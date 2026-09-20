@@ -110,3 +110,11 @@ unresolved inventor questions and publication risks.
 
 Gate: meet the thresholds in `static/core/output-contract.md`; otherwise label
 the package `incomplete draft`.
+
+## Mandatory Strict Gates
+
+Before Stage 5, establish the relevant closest prior technology without fabrication. Record verified citation data when available; otherwise keep the unresolved issue internal.
+Stage 5 must produce exactly one independent claim unless the user supplies an explicit alternative requirement. All other claims must be dependent and add technical limitations.
+Stage 5 must reject internal Chinese full stops, vague scope words, placeholders, missing antecedent basis, and unsupported limitations.
+Stage 8 must enforce title <=25 characters, abstract <=300 characters, and DOCX formatting: 宋体、小四、1.5倍行距; centered/bold title; required section headings bold without punctuation.
+Any strict-gate error forces status incomplete-draft.
