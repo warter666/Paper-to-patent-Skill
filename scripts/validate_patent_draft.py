@@ -86,9 +86,14 @@ def validate(data: dict) -> list[Finding]:
     independent_claims = []
     for claim in claims:
         text = str(claim.get("text", ""))
+        number = claim.get("number")
         claim_type = claim.get("claim_type")
-        if claim_type == "independent" or (claim_type is None and claim.get("number") == 1):
+        if claim_type == "independent" or (claim_type is None and number == 1):
             independent_claims.append(claim)
+        if number == 1 and claim_type not in (None, "independent"):
+            add(findings, "ERROR", "CLAIM_1_NOT_INDEPENDENT", "第1项权利要求必须为独立权利要求。")
+        if number == 1 and not re.search(r"其特征在于", text):
+            add(findings, "ERROR", "CLAIM_1_FEATURE_PART", "独立权利要求必须具有“其特征在于”或等同的特征部分。")
         if "。" in text[:-1]:
             add(findings, "ERROR", "CLAIM_INTERNAL_FULL_STOP", f"权利要求{claim.get('number')}内部含句号；句号只能出现在结尾。")
         if not text.endswith("。"):
@@ -102,9 +107,15 @@ def validate(data: dict) -> list[Finding]:
     if independent_claims and independent_claims[0].get("number") != 1:
         add(findings, "ERROR", "INDEPENDENT_CLAIM_ORDER", "独立权利要求必须为第1项并位于从属权利要求之前。")
     for claim in claims[1:]:
+        number = claim.get("number")
         text = str(claim.get("text", ""))
-        if not re.search(r"根据权利要求\s*\d+\s*所述", text):
-            add(findings, "ERROR", "DEPENDENT_REFERENCE", f"权利要求{claim.get('number')}未检测到明确的在先权利要求引用。")
+        refs = [int(x) for x in re.findall(r"根据权利要求\s*(\d+)\s*所述", text)]
+        if not refs:
+            add(findings, "ERROR", "DEPENDENT_REFERENCE", f"权利要求{number}未检测到明确的在先权利要求引用。")
+        elif any(ref >= int(number) for ref in refs):
+            add(findings, "ERROR", "DEPENDENT_REFERENCE_ORDER", f"权利要求{number}引用了自身或后续权利要求。")
+        if claim.get("claim_type") == "independent":
+            add(findings, "ERROR", "UNEXPECTED_INDEPENDENT", f"第{number}项不允许成为第二项独立权利要求。")
 
     source_records = data.get("source_map", [])
     source_ids = set()
@@ -172,6 +183,15 @@ def validate(data: dict) -> list[Finding]:
                     "ERROR",
                     "UNKNOWN_EVIDENCE_ID",
                     f"权利要求{claim_number}引用未知证据ID：{evidence_id}。",
+                )
+        for evidence_id in evidence_ids:
+            ledger_item = next((item for item in data.get("evidence_ledger", []) if item.get("id") == evidence_id), None)
+            if ledger_item and ledger_item.get("support_status") not in {"explicit", "inherent"}:
+                add(
+                    findings,
+                    "ERROR",
+                    "CLAIM_UNSUPPORTED_STATUS",
+                    f"权利要求{claim_number}的特征“{mapping.get('feature', '')}”引用了非正式支持状态证据：{evidence_id}。",
                 )
     for number in numbers:
         if number not in mapped_claims:
@@ -258,6 +278,16 @@ def validate(data: dict) -> list[Finding]:
                     "VAGUE_FINAL_RESULT",
                     f"图{figure.get('number')}末端节点使用了模糊结果名称。",
                 )
+
+    # 每一个独立权利要求步骤都必须在主流程图中出现，并与实施方式对应。
+    claim1 = next((claim for claim in claims if claim.get("number") == 1), None)
+    main_flow = next((fig for fig in figures if fig.get("number") == abstract_figure and fig.get("type") == "flowchart"), None)
+    if claim1 and main_flow:
+        claim_steps = set(re.findall(r"\bS\d+\b", str(claim1.get("text", ""))))
+        figure_steps = {str(node.get("claim_step")) for node in main_flow.get("nodes", []) if node.get("claim_step")}
+        missing_steps = sorted(claim_steps - figure_steps)
+        if missing_steps:
+            add(findings, "ERROR", "FLOWCHART_STEP_COVERAGE", f"主流程图缺少权利要求1步骤：{', '.join(missing_steps)}。")
 
     for field in ("technical_field", "background", "embodiments", "figure_descriptions"):
         if not spec.get(field):
