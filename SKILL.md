@@ -86,3 +86,25 @@ in `static/core/output-contract.md` is not met.
 
 The generated package is a drafting aid for inventor and patent-professional
 review, not a patentability opinion, infringement opinion, or filing guarantee.
+
+
+## STRICT OVERRIDE — Project-specific Chinese patent requirements
+
+Apply these rules as hard gates. They override any less strict wording elsewhere in the repository.
+
+- The invention title must be within 25 characters under the project counting rule and use a standard technical term.
+- Formal document text uses 宋体、小四号（12pt）、1.5倍行距. The title is centered and bold. 技术领域、背景技术、发明内容、附图说明、具体实施方式 headings are bold and have no punctuation.
+- The specification must be clear, complete, and enabling. The technical problem, technical solution, and beneficial effects must correspond.
+- Background must objectively describe relevant prior technology and its deficiency. Never fabricate a citation or silently treat the paper's own method as prior art. A verified patent citation should record country, publication number, title, and preferably publication date.
+- Exactly one independent claim is permitted by default. It must precede all dependent claims. Do not automatically add device/system/storage-medium/use independent claims.
+- The independent claim must contain the necessary technical features and form a closed technical chain. For method claims, preserve input/object → operation → technical processing/condition → concrete output.
+- Dependent claims must reference an earlier claim and add a concrete technical limitation supported by the specification.
+- Product claims should use structural features and relationships. Avoid pure function/effect limitations.
+- Reject ambiguous scope words such as 厚、薄、强、弱、高温、高压、很宽范围、约、接近、等、或类似物, and non-limiting expressions such as 例如、最好是、尤其是、必要时.
+- Each claim is one sentence: it may contain exactly one Chinese full stop, and that full stop must be the final character. No internal Chinese full stop.
+- Formal claims must contain no placeholders such as [TO CONFIRM] or [待确认].
+- The abstract must be no more than 300 characters including punctuation, with the technical solution as the main content.
+- Every core formula must be source-grounded, have complete symbol definitions, and be rendered as editable Office Math.
+- The overall flowchart must cover every numbered step of claim 1 and end in a concrete domain output.
+
+Before delivery, run the deterministic validators. Any hard-gate error makes the draft incomplete-draft.
