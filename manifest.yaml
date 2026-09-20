@@ -65,3 +65,15 @@ references:
       path: references/corpus-derived-patterns.md
     - condition: comparing a supplied paper with an existing patent
       path: references/corpus-pair-audit.md
+
+strict_overrides:
+  title_max_characters: 25
+  abstract_max_characters: 300
+  independent_claim_count: 1
+  claim_internal_full_stop_forbidden: true
+  claim_final_full_stop_required: true
+  body_font: 宋体
+  body_size_pt: 12
+  line_spacing: 1.5
+  section_headings_without_punctuation: true
+  never_fabricate_prior_art: true
