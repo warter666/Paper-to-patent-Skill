@@ -16,3 +16,13 @@
    and inventor questions in the structured draft and review appendix.
 10. Prefer reproducible artifacts: structured JSON, deterministic figures,
     editable equations, validation reports, and separate DOCX deliverables.
+
+## Strict Chinese Patent Requirements
+
+- Exactly one independent claim by default; it precedes all dependent claims.
+- Title <=25 characters; abstract <=300 characters including punctuation.
+- Claims are one sentence each: exactly one final Chinese full stop and no internal Chinese full stop.
+- Reject vague scope words and non-limiting examples/qualifiers in claims.
+- Product claims use structural features; method claims use process and technical-operation features.
+- Never fabricate prior-art citations, publication dates, implementation details, effects, or parameter ranges.
+- Formal text uses 宋体、小四、1.5倍行距; required section headings are bold and have no punctuation.
