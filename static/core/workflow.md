@@ -111,10 +111,24 @@ unresolved inventor questions and publication risks.
 Gate: meet the thresholds in `static/core/output-contract.md`; otherwise label
 the package `incomplete draft`.
 
+## Stage 9 - Filing handoff and version control
+
+For an actual filing workflow, treat drafting completion and filing completion as separate states. Prepare one submission directory containing the approved Word files and corresponding PDF files, then verify that the PDF and Word versions contain the same approved technical text and version.
+
+Confirm before handoff:
+- inventor and applicant names, order, identification information, and contact information are supplied by the user or authorized reviewer;
+- any institution-specific review forms, fee approvals, and submission routing are supplied as external administrative inputs;
+- the electronic package delivered to the patent agent or office is the same version retained for recordkeeping;
+- no applicant, inventor, fee, filing, or institutional fact has been inferred.
+
+Output: work/09-filing-handoff.json.
+
+Gate: no unresolved Word/PDF technical-text mismatch and no invented administrative information.
+
 ## Mandatory Strict Gates
 
 Before Stage 5, establish the relevant closest prior technology without fabrication. Record verified citation data when available; otherwise keep the unresolved issue internal.
 Stage 5 must produce exactly one independent claim unless the user supplies an explicit alternative requirement. All other claims must be dependent and add technical limitations.
-Stage 5 must reject internal Chinese full stops, vague scope words, placeholders, missing antecedent basis, and unsupported limitations.
+Stage 5 must reject internal Chinese full stops, vague scope words, placeholders, missing antecedent basis, self/later references, and unsupported limitations. Every dependent claim must add a concrete technical limitation.
 Stage 8 must enforce title <=25 characters, abstract <=300 characters, and DOCX formatting: 宋体、小四、1.5倍行距; centered/bold title; required section headings bold without punctuation.
 Any strict-gate error forces status incomplete-draft.
