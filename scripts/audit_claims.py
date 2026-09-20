@@ -75,7 +75,13 @@ def audit(text: str) -> list[Finding]:
         if not body:
             findings.append(Finding("ERROR", number, "EMPTY", "权利要求正文为空。"))
             continue
-        if "。" in body[:-1]:\n            findings.append(Finding("ERROR", number, "INTERNAL_FULL_STOP", "权利要求内部不得出现句号，句号只能出现在结尾。"))\n        if not body.endswith("。"):\n            findings.append(Finding("ERROR", number, "FINAL_FULL_STOP", "权利要求必须以一个句号结尾。"))\n        if VAGUE_WORDS.search(body):\n            findings.append(Finding("ERROR", number, "VAGUE_WORD", "权利要求包含保护范围可能不清的用语。"))\n        if PLACEHOLDER.search(body):
+        if "。" in body[:-1]:
+            findings.append(Finding("ERROR", number, "INTERNAL_FULL_STOP", "权利要求内部不得出现句号，句号只能出现在结尾。"))
+        if not body.endswith("。"):
+            findings.append(Finding("ERROR", number, "FINAL_FULL_STOP", "权利要求必须以一个句号结尾。"))
+        if VAGUE_WORDS.search(body):
+            findings.append(Finding("ERROR", number, "VAGUE_WORD", "权利要求包含保护范围可能不清的用语。"))
+        if PLACEHOLDER.search(body):
             findings.append(
                 Finding("ERROR", number, "PLACEHOLDER", "正式权利要求中仍含待确认标记。")
             )
@@ -127,7 +133,9 @@ def audit(text: str) -> list[Finding]:
                 )
         previous_text += compact
 
-    if independent_count != 1:\n        findings.append(Finding("ERROR", None, "INDEPENDENT_CLAIM_COUNT", f"独立权利要求数量应为1，当前检测为{independent_count}。"))\n    return findings
+    if independent_count != 1:
+        findings.append(Finding("ERROR", None, "INDEPENDENT_CLAIM_COUNT", f"独立权利要求数量应为1，当前检测为{independent_count}。"))
+    return findings
 
 
 def main() -> int:
