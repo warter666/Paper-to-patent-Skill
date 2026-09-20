@@ -11,6 +11,7 @@ from pathlib import Path
 SOURCE_ID = re.compile(r"^[PEFC]\d{3,}$")
 PLACEHOLDER = re.compile(r"\[(?:TO CONFIRM|待确认)[^\]]*\]", re.IGNORECASE)
 VAGUE_RESULT = re.compile(r"(技术结果|处理结果|最终结果)")
+VAGUE_CLAIM_WORDS = re.compile(r"(厚|薄|强|弱|高温|高压|很宽范围|约|接近|等|或类似物|例如|最好是|尤其是|必要时)")
 QUALITY_THRESHOLDS = {
     "evidence_support": 4,
     "claim_architecture": 4,
@@ -70,6 +71,40 @@ def validate(data: dict) -> list[Finding]:
                 "CLAIM_PLACEHOLDER",
                 f"权利要求{claim.get('number')}仍含待确认标记。",
             )
+
+    # Strict Chinese patent gates derived from the project drafting requirements.
+    title = str(data.get("title", ""))
+    abstract_text = re.sub(r"\s+", "", str(data.get("abstract", "")))
+    title_count = len(re.sub(r"\s+", "", title))
+    if title_count > 25:
+        add(findings, "ERROR", "TITLE_LENGTH", f"发明名称为{title_count}个字符，超过25个字符上限。")
+    if not abstract_text:
+        add(findings, "ERROR", "EMPTY_ABSTRACT", "说明书摘要为空。")
+    elif len(abstract_text) > 300:
+        add(findings, "ERROR", "ABSTRACT_LENGTH", f"摘要为{len(abstract_text)}个字符，超过300个字符上限。")
+
+    independent_claims = []
+    for claim in claims:
+        text = str(claim.get("text", ""))
+        claim_type = claim.get("claim_type")
+        if claim_type == "independent" or (claim_type is None and claim.get("number") == 1):
+            independent_claims.append(claim)
+        if "。" in text[:-1]:
+            add(findings, "ERROR", "CLAIM_INTERNAL_FULL_STOP", f"权利要求{claim.get('number')}内部含句号；句号只能出现在结尾。")
+        if not text.endswith("。"):
+            add(findings, "ERROR", "CLAIM_FINAL_FULL_STOP", f"权利要求{claim.get('number')}必须以一个句号结尾。")
+        if VAGUE_CLAIM_WORDS.search(text):
+            add(findings, "ERROR", "CLAIM_VAGUE_WORD", f"权利要求{claim.get('number')}包含保护范围可能不清的用语。")
+        if PLACEHOLDER.search(text):
+            add(findings, "ERROR", "CLAIM_PLACEHOLDER", f"权利要求{claim.get('number')}含待确认标记。")
+    if len(independent_claims) != 1:
+        add(findings, "ERROR", "INDEPENDENT_CLAIM_COUNT", f"独立权利要求数量为{len(independent_claims)}，项目规则要求恰好1项。")
+    if independent_claims and independent_claims[0].get("number") != 1:
+        add(findings, "ERROR", "INDEPENDENT_CLAIM_ORDER", "独立权利要求必须为第1项并位于从属权利要求之前。")
+    for claim in claims[1:]:
+        text = str(claim.get("text", ""))
+        if not re.search(r"根据权利要求\s*\d+\s*所述", text):
+            add(findings, "ERROR", "DEPENDENT_REFERENCE", f"权利要求{claim.get('number')}未检测到明确的在先权利要求引用。")
 
     source_records = data.get("source_map", [])
     source_ids = set()
