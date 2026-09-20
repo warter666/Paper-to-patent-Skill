@@ -145,6 +145,34 @@ class DraftValidationTests(unittest.TestCase):
         codes = {item.code for item in VALIDATOR.validate(draft)}
         self.assertIn("CLAIM_NOT_MAPPED", codes)
 
+    def test_title_over_25_fails(self):
+        draft = valid_draft()
+        draft["title"] = "一种用于工业图像缺陷检测的超长标题方法名称"
+        codes = {item.code for item in VALIDATOR.validate(draft)}
+        self.assertIn("TITLE_LENGTH", codes)
+
+    def test_abstract_over_300_fails(self):
+        draft = valid_draft()
+        draft["abstract"] = "字" * 301
+        codes = {item.code for item in VALIDATOR.validate(draft)}
+        self.assertIn("ABSTRACT_LENGTH", codes)
+
+    def test_internal_full_stop_fails(self):
+        draft = valid_draft()
+        draft["claims"][0]["text"] = "一种工业图像缺陷检测方法。其特征在于，包括：获取工业图像。"
+        codes = {item.code for item in VALIDATOR.validate(draft)}
+        self.assertIn("CLAIM_INTERNAL_FULL_STOP", codes)
+
+    def test_two_independent_claims_fail(self):
+        draft = valid_draft()
+        draft["claims"].append({
+            "number": 2,
+            "claim_type": "independent",
+            "text": "一种工业图像缺陷检测设备，其特征在于，包括处理器和存储器。"
+        })
+        codes = {item.code for item in VALIDATOR.validate(draft)}
+        self.assertIn("INDEPENDENT_CLAIM_COUNT", codes)
+
     def test_missing_core_equation_fails(self):
         draft = valid_draft()
         draft["specification"]["equations"] = []
