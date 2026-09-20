@@ -85,13 +85,16 @@ def audit(text: str) -> list[Finding]:
             findings.append(
                 Finding("ERROR", number, "PLACEHOLDER", "正式权利要求中仍含待确认标记。")
             )
-        if number == 1 and refs:
+        if number == 1:
+            independent_count += 1
+            if refs:
+                findings.append(
+                    Finding("ERROR", number, "INDEPENDENT_REFERENCE", "权利要求1不应引用其他权利要求。")
+                )
+        elif not refs:
+            independent_count += 1
             findings.append(
-                Finding("ERROR", number, "INDEPENDENT_REFERENCE", "权利要求1不应引用其他权利要求。")
-            )
-        if number > 1 and not refs:
-            findings.append(
-                Finding("WARNING", number, "NO_REFERENCE", "未检测到从属引用；确认其是否为独立权利要求。")
+                Finding("ERROR", number, "UNEXPECTED_INDEPENDENT", "除第1项外不得出现无从属引用的独立权利要求。")
             )
         for ref in refs:
             if ref >= number:
