@@ -62,6 +62,7 @@ def valid_draft():
         "claims": [
             {
                 "number": 1,
+                "claim_type": "independent",
                 "text": "一种工业图像缺陷检测方法，其特征在于，包括：S1，获取工业图像；S2，对工业图像进行多尺度特征融合；S3，根据融合特征输出缺陷检测结果。",
             }
         ],
@@ -172,6 +173,25 @@ class DraftValidationTests(unittest.TestCase):
         })
         codes = {item.code for item in VALIDATOR.validate(draft)}
         self.assertIn("INDEPENDENT_CLAIM_COUNT", codes)
+
+    def test_dependent_claim_must_reference_backward(self):
+        draft = valid_draft()
+        draft["claims"].append({
+            "number": 2,
+            "claim_type": "dependent",
+            "text": "根据权利要求2所述的工业图像缺陷检测方法，其特征在于，包括阈值处理。"
+        })
+        draft["claim_feature_map"].append(
+            {"claim_number": 2, "feature": "阈值处理", "evidence_ids": ["EV1"]}
+        )
+        codes = {item.code for item in VALIDATOR.validate(draft)}
+        self.assertIn("DEPENDENT_REFERENCE_ORDER", codes)
+
+    def test_claim_feature_cannot_use_needs_confirmation(self):
+        draft = valid_draft()
+        draft["evidence_ledger"][0]["support_status"] = "needs-confirmation"
+        codes = {item.code for item in VALIDATOR.validate(draft)}
+        self.assertIn("CLAIM_UNSUPPORTED_STATUS", codes)
 
     def test_missing_core_equation_fails(self):
         draft = valid_draft()
