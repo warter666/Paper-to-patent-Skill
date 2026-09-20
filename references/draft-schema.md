@@ -273,3 +273,13 @@ Populate a UTF-8 JSON file with this structure before rendering a DOCX. Empty op
 - Record a disposition for every core source formula and methodology figure.
 - Populate `quality_assessment.scores` with a 1-5 score and evidence sentence
   for each dimension required by `static/core/output-contract.md`.
+
+## Strict Schema Rules
+
+- Add claim field claim_type with value independent or dependent.
+- Exactly one claim may have claim_type=independent by default.
+- Dependent claims must reference an earlier claim.
+- Claims must end with exactly one Chinese full stop and contain no other Chinese full stop.
+- Add optional prior_art array for verified closest-prior-art records; never invent records.
+- Add optional format_checks object with title_count, abstract_count, independent_claim_count, claim_punctuation_ok.
+- title must pass the 25-character gate and abstract must pass the 300-character gate.
