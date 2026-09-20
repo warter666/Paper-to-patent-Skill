@@ -15,6 +15,7 @@ REFERENCE = re.compile(
 )
 TERM_INTRO = re.compile(r"(?:所述|该)([\u4e00-\u9fffA-Za-z][\u4e00-\u9fffA-Za-z0-9_-]{1,20})")
 PLACEHOLDER = re.compile(r"\[(?:TO CONFIRM|待确认)[^\]]*\]", re.IGNORECASE)
+VAGUE_WORDS = re.compile(r"(厚|薄|强|弱|高温|高压|很宽范围|约|接近|等|或类似物|例如|最好是|尤其是|必要时)")
 
 
 @dataclass
@@ -64,6 +65,7 @@ def audit(text: str) -> list[Finding]:
         )
 
     previous_text = ""
+    independent_count = 0
     claim_map = {}
     for number, body in claims:
         compact = normalize(body)
@@ -73,7 +75,7 @@ def audit(text: str) -> list[Finding]:
         if not body:
             findings.append(Finding("ERROR", number, "EMPTY", "权利要求正文为空。"))
             continue
-        if PLACEHOLDER.search(body):
+        if "。" in body[:-1]:\n            findings.append(Finding("ERROR", number, "INTERNAL_FULL_STOP", "权利要求内部不得出现句号，句号只能出现在结尾。"))\n        if not body.endswith("。"):\n            findings.append(Finding("ERROR", number, "FINAL_FULL_STOP", "权利要求必须以一个句号结尾。"))\n        if VAGUE_WORDS.search(body):\n            findings.append(Finding("ERROR", number, "VAGUE_WORD", "权利要求包含保护范围可能不清的用语。"))\n        if PLACEHOLDER.search(body):
             findings.append(
                 Finding("ERROR", number, "PLACEHOLDER", "正式权利要求中仍含待确认标记。")
             )
@@ -125,7 +127,7 @@ def audit(text: str) -> list[Finding]:
                 )
         previous_text += compact
 
-    return findings
+    if independent_count != 1:\n        findings.append(Finding("ERROR", None, "INDEPENDENT_CLAIM_COUNT", f"独立权利要求数量应为1，当前检测为{independent_count}。"))\n    return findings
 
 
 def main() -> int:
