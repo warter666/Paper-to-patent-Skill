@@ -189,3 +189,23 @@ Delivery thresholds:
 - Require no unresolved structural errors from `scripts/audit_claims.py`.
 
 If a threshold is missed, label the output `incomplete draft` and list the exact inventor input needed to improve it.
+
+## Strict Addendum — Supplied Drafting Requirements
+
+### Specification
+
+说明书必须对发明作出清楚、完整的说明，使所属技术领域的技术人员能够实现。凡本领域技术人员不能从现有技术直接、唯一得出的必要内容，必须在说明书中描述。
+技术问题、技术方案、有益效果必须相互适应。背景技术只写与本发明所解决问题相关的缺陷，不得把本发明本身伪装成现有技术。
+发明名称不超过25个字符。技术领域、背景技术、发明内容、附图说明、具体实施方式标题不带标点。
+### Claims
+
+默认只设置一项独立权利要求，并置于所有从属权利要求之前。独立权利要求必须从整体反映发明方案并包含解决技术问题的必要技术特征。
+方法权利要求应按输入/对象、操作、操作方式或条件、技术输出的逻辑描述步骤；产品权利要求应描述组成部件、部件特征及其位置或连接关系。
+每项权利要求必须以说明书为依据，且不得超出说明书公开范围。每项权利要求只能在结尾使用一个句号，句号前不得再出现句号。
+不得使用“厚、薄、强、弱、高温、高压、很宽范围、约、接近、等、或类似物”等含义不确定用语；不得使用“例如、最好是、尤其是、必要时”等导致保护范围不清的用语。
+### Abstract
+
+摘要清楚反映技术问题、技术方案和主要用途，且技术方案为主；总字数（含标点）不超过300字。
+### Formatting
+
+正式申请文件内容采用宋体、小四字号、1.5倍行距。标题居中加黑。
