@@ -27,6 +27,8 @@
 - Never fabricate prior-art citations, publication dates, implementation details, effects, or parameter ranges.
 - Formal text uses 宋体、小四、1.5倍行距; required section headings are bold and have no punctuation.
 - The technical field should identify the concrete field, subject, and supported use, preferably following the supplied “本发明属于【】技术领域，涉及一种【】，可用于【用途】” pattern without inventing a use.
-- Background should identify the closest relevant technology, its technical approach, and the defect connected to the solved technical problem; citation details must be verified.
+- Background should prioritize patent documents published within the two years immediately preceding the task's supplied filing/application date. The citations must form a technically and chronologically meaningful progression rather than a flat list: each later solution should address a concrete limitation of the preceding solution, while also exposing a remaining/new problem that leads toward the present invention.
+- Background citations must be verified against the actual disclosure of each document. Never describe one patent as improving another unless the evidence supports that relationship. If the recent two-year window does not contain enough relevant patents, state the insufficiency explicitly rather than silently using older patents.
+- The background must end with a clear chain from accumulated prior-art limitations to the technical problem that the present invention addresses.
 - Beneficial effects must be objectively tied to disclosed technical features; numerical effects require their experimental conditions and comparison basis.
 - The specification must disclose indispensable implementation content that a skilled person cannot directly and uniquely derive from prior art.
