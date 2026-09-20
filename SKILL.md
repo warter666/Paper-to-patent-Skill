@@ -108,3 +108,31 @@ Apply these rules as hard gates. They override any less strict wording elsewhere
 - The overall flowchart must cover every numbered step of claim 1 and end in a concrete domain output.
 
 Before delivery, run the deterministic validators. Any hard-gate error makes the draft incomplete-draft.
+
+## NON-NEGOTIABLE EXECUTION ORDER
+
+1. **Evidence before drafting**: do not draft formal claims from an abstract, contribution list, or model-generated summary alone. Inspect the full substantive disclosure and establish source IDs first.
+2. **Closest prior technology before claim wording**: identify and verify the most relevant prior technology where external search is requested or available. Never invent a citation, publication number, date, or disclosed feature. If verification is unavailable, preserve the uncertainty rather than filling it.
+3. **Claim 1 before dependent claims**: create exactly one independent claim unless the user explicitly supplies a different requirement. Claim 1 must contain the necessary technical features and a closed technical chain. It must use a clear preamble/characterizing-part structure.
+4. **Dependent claims only narrow**: every dependent claim must cite an earlier claim and add a concrete technical limitation. Never create a dependent claim that only restates an effect, purpose, advantage, or optional prose.
+5. **Specification must support the claims**: after claims are drafted, write the specification so every claimed term, operation, relationship, parameter, formula, and alternative is actually explained to an enabling level. Do not backfill unsupported details.
+6. **Abstract is last**: the abstract must be generated from the final claim/specification, be <=300 Chinese characters including punctuation, and emphasize the technical solution.
+7. **Application handoff is a separate state**: administrative facts such as applicant/inventor identity, order, identification numbers, fee approvals, institutional forms, and submission routing are external inputs. The Skill must never infer them. Word/PDF files must represent the same approved technical version.
+
+## HARD FAIL CONDITIONS
+
+Stop formal drafting and report incomplete draft when any of the following occurs:
+
+- required source material has not been inspected or is unavailable;
+- an essential claim feature is only needs-confirmation or unsupported;
+- claim 1 cannot form a complete technical chain;
+- there is more than one independent claim;
+- a dependent claim references itself or a later claim;
+- a claim contains an internal Chinese full stop, an unresolved placeholder, or a prohibited vague-scope expression;
+- the specification cannot support a claimed feature or required implementation detail;
+- a core formula lacks source linkage, complete symbol definitions, or editable Office Math output;
+- the main flowchart does not cover every numbered step of claim 1;
+- title >25 characters or abstract >300 characters;
+- final Word/PDF versions are inconsistent.
+
+Do not “repair” a hard failure by inventing technical content. Ask for the missing source or inventor confirmation, and keep the affected item out of the formal claim set.
