@@ -56,3 +56,14 @@ formula forces the status `incomplete draft`.
 State that the package requires inventor confirmation and qualified Chinese
 patent-professional review. Do not describe it as filing-ready merely because
 the automated checks pass.
+
+## Strict Formal Contract
+
+- 发明名称不超过25个字符。
+- 正文采用宋体、小四号（12pt）、1.5倍行距。
+- 标题居中加黑；技术领域、背景技术、发明内容、附图说明、具体实施方式标题加黑且不带标点。
+- 默认且本项目强制要求一项独立权利要求，写在全部从属权利要求之前。
+- 每项权利要求只能在末尾出现一个中文句号，不得在正文中出现其他中文句号。
+- 禁止在权利要求中出现待确认标记、含义不确定的范围词以及例如/最好是/尤其是/必要时等限定不清用语。
+- 产品权利要求优先使用结构及结构关系；方法权利要求使用工艺、操作、步骤或流程特征。
+- 摘要不超过300个字符（含标点）。
