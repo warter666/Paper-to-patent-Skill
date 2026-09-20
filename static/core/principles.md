@@ -26,3 +26,7 @@
 - Product claims use structural features; method claims use process and technical-operation features.
 - Never fabricate prior-art citations, publication dates, implementation details, effects, or parameter ranges.
 - Formal text uses 宋体、小四、1.5倍行距; required section headings are bold and have no punctuation.
+- The technical field should identify the concrete field, subject, and supported use, preferably following the supplied “本发明属于【】技术领域，涉及一种【】，可用于【用途】” pattern without inventing a use.
+- Background should identify the closest relevant technology, its technical approach, and the defect connected to the solved technical problem; citation details must be verified.
+- Beneficial effects must be objectively tied to disclosed technical features; numerical effects require their experimental conditions and comparison basis.
+- The specification must disclose indispensable implementation content that a skilled person cannot directly and uniquely derive from prior art.
