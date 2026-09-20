@@ -1,5 +1,5 @@
 name: paper-to-cn-patent
-version: 2.0.0
+version: 2.1.0
 description: >
   Agent-neutral routing manifest for converting research disclosures into
   evidence-grounded Chinese invention patent drafts.
@@ -77,3 +77,10 @@ strict_overrides:
   line_spacing: 1.5
   section_headings_without_punctuation: true
   never_fabricate_prior_art: true
+  technical_field_template: "本发明属于【】技术领域，涉及一种【】，可用于【用途】"
+  dependent_claims_must_add_limitation: true
+  claim_reference_must_point_backward: true
+  claim_feature_evidence_must_be_explicit_or_inherent: true
+  flowchart_must_cover_claim_1_steps: true
+  filing_admin_facts_must_be_user_supplied: true
+  word_pdf_version_consistency_required: true
