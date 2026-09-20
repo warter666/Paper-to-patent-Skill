@@ -26,7 +26,15 @@ def add_heading(document: Document, text: str, level: int = 1) -> None:
     paragraph = document.add_paragraph()
     paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER if level == 1 else WD_ALIGN_PARAGRAPH.LEFT
     run = paragraph.add_run(text)
-    set_run_font(run, "宋体", 16 if level == 1 else 14, bold=True)
+    set_run_font(run, "宋体", 12, bold=True)
+
+
+def add_title(document: Document, text: str) -> None:
+    paragraph = document.add_paragraph()
+    paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    paragraph.paragraph_format.line_spacing = 1.5
+    run = paragraph.add_run(str(text))
+    set_run_font(run, "宋体", 12, bold=True)
 
 
 def add_body(document: Document, text: str, indent: bool = True) -> None:
@@ -87,7 +95,7 @@ def add_claims(document: Document, claims: list[dict]) -> None:
 
 def add_specification(document: Document, data: dict, figure_dir: Path | None = None) -> None:
     add_heading(document, "说明书")
-    add_heading(document, data.get("title", "[TO CONFIRM: title]"), level=2)
+    add_title(document, data.get("title", "[TO CONFIRM: title]"))
     spec = data.get("specification", {})
     sections = [
         ("技术领域", spec.get("technical_field", [])),
