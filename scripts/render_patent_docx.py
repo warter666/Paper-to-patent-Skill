@@ -36,6 +36,16 @@ def add_title(document: Document, text: str) -> None:
     run = paragraph.add_run(str(text))
     set_run_font(run, "宋体", 12, bold=True)
 
+def add_section_heading(document: Document, text: str) -> None:
+    # 项目要求：章节标题加黑、不缩进、不带标点。
+    clean = str(text).rstrip("。；：: ")
+    paragraph = document.add_paragraph()
+    paragraph.alignment = WD_ALIGN_PARAGRAPH.LEFT
+    paragraph.paragraph_format.line_spacing = 1.5
+    paragraph.paragraph_format.first_line_indent = Cm(0)
+    run = paragraph.add_run(clean)
+    set_run_font(run, "宋体", 12, bold=True)
+
 
 def add_body(document: Document, text: str, indent: bool = True) -> None:
     paragraph = document.add_paragraph()
@@ -110,20 +120,20 @@ def add_specification(document: Document, data: dict, figure_dir: Path | None = 
         ]
     )
     for heading, paragraphs in sections:
-        add_heading(document, heading, level=2)
+        add_section_heading(document, heading)
         for paragraph in paragraphs:
             add_body(document, paragraph)
 
     equations = spec.get("equations", [])
     if equations:
-        add_heading(document, "公式及符号说明", level=2)
+        add_section_heading(document, "公式及符号说明")
         for equation in equations:
             add_equation(document, equation)
 
     if figure_dir:
         figures = data.get("figures", [])
         if figures:
-            add_heading(document, "说明书附图", level=2)
+            add_section_heading(document, "说明书附图")
         for figure in figures:
             image = figure_dir / f"figure-{figure['number']}.png"
             if not image.exists():
@@ -137,9 +147,9 @@ def add_specification(document: Document, data: dict, figure_dir: Path | None = 
             caption_run = caption.add_run(f"图{figure['number']} {figure.get('title', '')}")
             set_run_font(caption_run, "宋体", 11)
 
-    add_heading(document, "具体实施方式", level=2)
+    add_section_heading(document, "具体实施方式")
     for embodiment in spec.get("embodiments", []):
-        add_heading(document, embodiment.get("heading", "实施例"), level=2)
+        add_section_heading(document, embodiment.get("heading", "实施例"))
         for paragraph in embodiment.get("paragraphs", []):
             add_body(document, paragraph)
 
@@ -156,7 +166,7 @@ def add_figure(
     if not image.exists():
         return False
     if heading:
-        add_heading(document, heading, level=2)
+        add_section_heading(document, heading)
     paragraph = document.add_paragraph()
     paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
     run = paragraph.add_run()
@@ -183,7 +193,7 @@ def add_abstract(
     include_figure: bool = True,
 ) -> None:
     add_heading(document, "说明书摘要")
-    add_heading(document, data.get("title", "[TO CONFIRM: title]"), level=2)
+    add_title(document, data.get("title", "[TO CONFIRM: title]"))
     add_body(document, data.get("abstract", ""), indent=False)
     figure = abstract_figure(data)
     if include_figure and figure:
